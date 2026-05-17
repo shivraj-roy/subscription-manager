@@ -3,9 +3,14 @@ import { useState } from "react";
 import { AddSubscriptionForm } from "./add-subscription";
 import { SubscriptionDetail } from "./subscription-detail";
 import { useSubscriptions } from "./storage";
-import { CATEGORIES, formatCurrency } from "./utils";
+import { CATEGORIES, formatCurrency, formatCycle } from "./utils";
 
 type SortKey = "name" | "amount" | "billingDay" | "category";
+
+const STATUS_ICON = {
+  active: { source: Icon.CheckCircle, tintColor: Color.Green },
+  paused: { source: Icon.Pause, tintColor: Color.Yellow },
+};
 
 export function SubscriptionList() {
   const { subscriptions, deleteSubscription, updateSubscription, isLoading } = useSubscriptions();
@@ -27,8 +32,8 @@ export function SubscriptionList() {
       }
     });
 
-  const active = filtered.filter((s) => s.isActive);
-  const paused = filtered.filter((s) => !s.isActive);
+  const active = filtered.filter((s) => s.status === "active");
+  const paused = filtered.filter((s) => s.status === "paused");
 
   function renderSection(items: typeof filtered, title: string) {
     if (items.length === 0) return null;
@@ -41,12 +46,11 @@ export function SubscriptionList() {
             title={sub.name}
             subtitle={sub.category}
             accessories={[
-              { text: formatCurrency(sub.amount, sub.currency), tooltip: `${sub.billingCycle}` },
-              { text: `Day ${sub.billingDay}`, tooltip: "Billing day" },
               {
-                icon: sub.isActive ? { source: Icon.CheckCircle, tintColor: Color.Green } : Icon.Circle,
-                tooltip: sub.isActive ? "Active" : "Paused",
+                text: `${formatCurrency(sub.amount, sub.currency)} ${formatCycle(sub.billingCycle)}`,
+                tooltip: sub.billingCycle,
               },
+              { icon: STATUS_ICON[sub.status], tooltip: sub.status === "active" ? "Active" : "Paused" },
             ]}
             actions={
               <ActionPanel>
@@ -59,13 +63,14 @@ export function SubscriptionList() {
                 />
                 <ActionPanel.Section>
                   <Action
-                    title={sub.isActive ? "Pause" : "Resume"}
-                    icon={sub.isActive ? Icon.Pause : Icon.Play}
+                    title={sub.status === "active" ? "Pause" : "Resume"}
+                    icon={sub.status === "active" ? Icon.Pause : Icon.Play}
                     onAction={async () => {
-                      await updateSubscription(sub.id, { isActive: !sub.isActive });
+                      const next = sub.status === "active" ? "paused" : "active";
+                      await updateSubscription(sub.id, { status: next });
                       await showToast({
                         style: Toast.Style.Success,
-                        title: sub.isActive ? `Paused ${sub.name}` : `Resumed ${sub.name}`,
+                        title: next === "active" ? `Resumed ${sub.name}` : `Paused ${sub.name}`,
                       });
                     }}
                   />

@@ -85,7 +85,7 @@ export function AddSubscriptionForm() {
       list: values.list,
       iconUrl,
       notes: values.notes || undefined,
-      isActive: true,
+      status: "active",
     };
 
     await addSubscription(sub);

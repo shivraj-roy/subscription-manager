@@ -1,8 +1,24 @@
 import { LocalStorage } from "@raycast/api";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Subscription } from "./types";
+import { Subscription, SubscriptionStatus } from "./types";
 
 const STORAGE_KEY = "subscriptions-v1";
+
+// Migrate old isActive boolean → status field
+function migrate(raw: Record<string, unknown>[]): Subscription[] {
+  return raw.map((s) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { isActive: _removed, ...rest } = s;
+    const rawStatus = s.status as string | undefined;
+    const status: SubscriptionStatus =
+      rawStatus === "active" || rawStatus === "paused"
+        ? rawStatus
+        : ((s.isActive as boolean) ?? true)
+          ? "active"
+          : "paused";
+    return { ...rest, status } as Subscription;
+  });
+}
 
 let _cache: Subscription[] | null = null;
 const _setters = new Set<Dispatch<SetStateAction<Subscription[]>>>();
@@ -24,7 +40,7 @@ export function useSubscriptions() {
 
     if (_cache === null) {
       LocalStorage.getItem<string>(STORAGE_KEY).then((raw) => {
-        _cache = raw ? (JSON.parse(raw) as Subscription[]) : [];
+        _cache = raw ? migrate(JSON.parse(raw) as Record<string, unknown>[]) : [];
         setIsLoading(false);
         notify();
       });

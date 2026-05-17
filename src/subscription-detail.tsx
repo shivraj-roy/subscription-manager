@@ -1,6 +1,7 @@
 import {
   Action,
   ActionPanel,
+  Color,
   Detail,
   Form,
   Icon,
@@ -214,7 +215,7 @@ export function SubscriptionDetail({ id, startEditing = false }: { id: string; s
 | Next Billing | ${nextBilling} (day ${sub.billingDay}) |
 | Category | ${sub.category} |
 | List | ${sub.list} |
-| Status | ${sub.isActive ? "Active" : "Paused"} |
+| Status | ${sub.status.charAt(0).toUpperCase() + sub.status.slice(1)} |
 | Started | ${new Date(sub.startDate).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })} |
 ${sub.paymentMethod ? `| Payment Method | ${sub.paymentMethod} |` : ""}
 
@@ -237,8 +238,12 @@ ${sub.notes ? `---\n\n${sub.notes}` : ""}
           <Detail.Metadata.Separator />
           <Detail.Metadata.Label
             title="Status"
-            text={sub.isActive ? "Active" : "Paused"}
-            icon={sub.isActive ? Icon.CheckCircle : Icon.Circle}
+            text={sub.status.charAt(0).toUpperCase() + sub.status.slice(1)}
+            icon={
+              sub.status === "active"
+                ? { source: Icon.CheckCircle, tintColor: Color.Green }
+                : { source: Icon.Pause, tintColor: Color.Yellow }
+            }
           />
         </Detail.Metadata>
       }
@@ -251,13 +256,14 @@ ${sub.notes ? `---\n\n${sub.notes}` : ""}
             shortcut={{ modifiers: ["cmd"], key: "e" }}
           />
           <Action
-            title={sub.isActive ? "Pause Subscription" : "Resume Subscription"}
-            icon={sub.isActive ? Icon.Pause : Icon.Play}
+            title={sub.status === "active" ? "Pause Subscription" : "Resume Subscription"}
+            icon={sub.status === "active" ? Icon.Pause : Icon.Play}
             onAction={async () => {
-              await updateSubscription(id, { isActive: !sub.isActive });
+              const next = sub.status === "active" ? "paused" : "active";
+              await updateSubscription(id, { status: next });
               await showToast({
                 style: Toast.Style.Success,
-                title: sub.isActive ? "Subscription Paused" : "Subscription Resumed",
+                title: next === "active" ? "Subscription Resumed" : "Subscription Paused",
               });
             }}
           />

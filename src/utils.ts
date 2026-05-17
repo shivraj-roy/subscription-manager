@@ -63,7 +63,7 @@ export function getMonthlyTotal(
   rates?: Record<string, number>,
 ): number {
   return subscriptions
-    .filter((s) => s.isActive)
+    .filter((s) => s.status === "active")
     .filter((s) => {
       if (s.billingCycle === "monthly") return true;
       const start = new Date(s.startDate);
@@ -88,7 +88,7 @@ export function getSubscriptionsForDay(
   subscriptions: Subscription[],
 ): Subscription[] {
   return subscriptions.filter((s) => {
-    if (!s.isActive || s.billingDay !== day) return false;
+    if (s.status !== "active" || s.billingDay !== day) return false;
     const start = new Date(s.startDate);
     const subStart = new Date(year, month, day);
     if (subStart < new Date(start.getFullYear(), start.getMonth(), start.getDate())) return false;
@@ -109,7 +109,7 @@ export function getSubscriptionsForDay(
 
 export function getMonthSubscriptions(month: number, year: number, subscriptions: Subscription[]): Subscription[] {
   return subscriptions
-    .filter((s) => s.isActive)
+    .filter((s) => s.status === "active")
     .filter((s) => {
       if (s.billingCycle === "monthly") return true;
       const start = new Date(s.startDate);

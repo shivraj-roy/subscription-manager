@@ -1,4 +1,5 @@
 export type BillingCycle = "monthly" | "yearly" | "weekly" | "quarterly" | "half-yearly";
+export type SubscriptionStatus = "active" | "paused";
 
 export interface Preferences {
   primaryCurrency: string;
@@ -27,5 +28,5 @@ export interface Subscription {
   notes?: string;
   iconUrl?: string;
   color?: string;
-  isActive: boolean;
+  status: SubscriptionStatus;
 }
