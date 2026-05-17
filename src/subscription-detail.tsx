@@ -1,4 +1,15 @@
-import { Action, ActionPanel, Detail, Form, Icon, Toast, confirmAlert, showToast, useNavigation } from "@raycast/api";
+import {
+  Action,
+  ActionPanel,
+  Detail,
+  Form,
+  Icon,
+  Toast,
+  confirmAlert,
+  popToRoot,
+  showToast,
+  useNavigation,
+} from "@raycast/api";
 import { useState } from "react";
 import { useSubscriptions } from "./storage";
 import { BillingCycle, Subscription } from "./types";
@@ -168,7 +179,6 @@ function EditForm({ sub, onSave }: { sub: Subscription; onSave: (updates: Partia
 export function SubscriptionDetail({ id, startEditing = false }: { id: string; startEditing?: boolean }) {
   const [editing, setEditing] = useState(startEditing);
   const { subscriptions, updateSubscription, deleteSubscription } = useSubscriptions();
-  const { pop } = useNavigation();
 
   const sub = subscriptions.find((s) => s.id === id);
 
@@ -265,7 +275,7 @@ ${sub.notes ? `---\n\n${sub.notes}` : ""}
               if (confirmed) {
                 await deleteSubscription(id);
                 await showToast({ style: Toast.Style.Success, title: "Subscription Deleted" });
-                pop();
+                await popToRoot();
               }
             }}
           />

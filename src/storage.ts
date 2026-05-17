@@ -1,16 +1,14 @@
 import { LocalStorage } from "@raycast/api";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Subscription } from "./types";
 
 const STORAGE_KEY = "subscriptions-v1";
 
-// Module-level cache shared across ALL hook instances regardless of navigation tree.
-// When any component mutates, notify() re-renders every subscriber instantly.
 let _cache: Subscription[] | null = null;
-const _listeners = new Set<() => void>();
+const _setters = new Set<Dispatch<SetStateAction<Subscription[]>>>();
 
 function notify() {
-  _listeners.forEach((fn) => fn());
+  _setters.forEach((set) => set([...(_cache ?? [])]));
 }
 
 async function persist(subs: Subscription[]) {
@@ -18,12 +16,11 @@ async function persist(subs: Subscription[]) {
 }
 
 export function useSubscriptions() {
-  const [, forceUpdate] = useState(0);
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>(_cache ?? []);
   const [isLoading, setIsLoading] = useState(_cache === null);
 
   useEffect(() => {
-    const listener = () => forceUpdate((n) => n + 1);
-    _listeners.add(listener);
+    _setters.add(setSubscriptions);
 
     if (_cache === null) {
       LocalStorage.getItem<string>(STORAGE_KEY).then((raw) => {
@@ -33,10 +30,12 @@ export function useSubscriptions() {
       });
     } else {
       setIsLoading(false);
+      // Sync with latest cache on mount (covers remount after navigation)
+      setSubscriptions([..._cache]);
     }
 
     return () => {
-      _listeners.delete(listener);
+      _setters.delete(setSubscriptions);
     };
   }, []);
 
@@ -58,5 +57,5 @@ export function useSubscriptions() {
     await persist(_cache);
   }
 
-  return { subscriptions: _cache ?? [], addSubscription, updateSubscription, deleteSubscription, isLoading };
+  return { subscriptions, addSubscription, updateSubscription, deleteSubscription, isLoading };
 }

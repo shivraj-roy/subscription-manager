@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Color, Icon, List, Toast, confirmAlert, showToast } from "@raycast/api";
+import { Action, ActionPanel, Color, Icon, List, Toast, confirmAlert, popToRoot, showToast } from "@raycast/api";
 import { useState } from "react";
 import { AddSubscriptionForm } from "./add-subscription";
 import { SubscriptionDetail } from "./subscription-detail";
@@ -83,6 +83,7 @@ export function SubscriptionList() {
                       if (confirmed) {
                         await deleteSubscription(sub.id);
                         await showToast({ style: Toast.Style.Success, title: "Subscription Deleted" });
+                        await popToRoot();
                       }
                     }}
                   />
