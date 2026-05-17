@@ -26,7 +26,7 @@
     {
       "name": "primaryCurrency",
       "title": "Primary Currency",
-      "description": "Currency used for the monthly total. All subscriptions are converted to this currency using live exchange rates.",
+      "description": "Main currency for totals",
       "type": "dropdown",
       "required": false,
       "default": "INR",
@@ -44,20 +44,20 @@
     {
       "name": "roundingEnabled",
       "title": "Rounding",
-      "description": "Display amounts without decimals",
+      "description": "Hide decimal places",
       "type": "checkbox",
       "required": false,
       "default": false,
-      "label": "Display amounts without decimals"
+      "label": "Rounding"
     },
     {
       "name": "abbreviateNumbers",
-      "title": "Large Number Abbreviation",
-      "description": "Use compact format like 74.5k",
+      "title": "Abbreviated Numbers",
+      "description": "Show compact format like 99.9K",
       "type": "checkbox",
       "required": false,
       "default": true,
-      "label": "Use compact format like 74.5k"
+      "label": "Abbreviated Numbers"
     }
   ],
   "dependencies": {
