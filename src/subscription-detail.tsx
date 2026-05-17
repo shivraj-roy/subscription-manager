@@ -265,6 +265,7 @@ ${sub.notes ? `---\n\n${sub.notes}` : ""}
                 style: Toast.Style.Success,
                 title: next === "active" ? "Subscription Resumed" : "Subscription Paused",
               });
+              await popToRoot();
             }}
           />
           <Action

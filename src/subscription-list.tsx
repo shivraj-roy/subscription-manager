@@ -72,6 +72,7 @@ export function SubscriptionList() {
                         style: Toast.Style.Success,
                         title: next === "active" ? `Resumed ${sub.name}` : `Paused ${sub.name}`,
                       });
+                      await popToRoot();
                     }}
                   />
                   <Action
