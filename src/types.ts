@@ -1,5 +1,11 @@
 export type BillingCycle = "monthly" | "yearly" | "weekly" | "quarterly";
 
+export interface Preferences {
+  primaryCurrency: string;
+  roundingEnabled: boolean;
+  abbreviateNumbers: boolean;
+}
+
 export interface CalendarDay {
   date: Date;
   dayNumber: number;

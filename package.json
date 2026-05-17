@@ -22,6 +22,44 @@
       "mode": "view"
     }
   ],
+  "preferences": [
+    {
+      "name": "primaryCurrency",
+      "title": "Primary Currency",
+      "description": "Currency used for the monthly total. All subscriptions are converted to this currency using live exchange rates.",
+      "type": "dropdown",
+      "required": false,
+      "default": "INR",
+      "data": [
+        { "title": "INR — Indian Rupee", "value": "INR" },
+        { "title": "USD — US Dollar", "value": "USD" },
+        { "title": "EUR — Euro", "value": "EUR" },
+        { "title": "GBP — British Pound", "value": "GBP" },
+        { "title": "JPY — Japanese Yen", "value": "JPY" },
+        { "title": "AUD — Australian Dollar", "value": "AUD" },
+        { "title": "CAD — Canadian Dollar", "value": "CAD" },
+        { "title": "SGD — Singapore Dollar", "value": "SGD" }
+      ]
+    },
+    {
+      "name": "roundingEnabled",
+      "title": "Rounding",
+      "description": "Display amounts without decimals",
+      "type": "checkbox",
+      "required": false,
+      "default": false,
+      "label": "Display amounts without decimals"
+    },
+    {
+      "name": "abbreviateNumbers",
+      "title": "Large Number Abbreviation",
+      "description": "Use compact format like 74.5k",
+      "type": "checkbox",
+      "required": false,
+      "default": true,
+      "label": "Use compact format like 74.5k"
+    }
+  ],
   "dependencies": {
     "@raycast/api": "^1.104.16",
     "@raycast/utils": "^1.17.0"

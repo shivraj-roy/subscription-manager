@@ -1,22 +1,36 @@
-import { Action, ActionPanel, Detail, Icon } from "@raycast/api";
+import { Action, ActionPanel, Detail, Icon, getPreferenceValues } from "@raycast/api";
+import { useFetch } from "@raycast/utils";
 import { useState } from "react";
 import { AddSubscriptionForm } from "./add-subscription";
 import { SubscriptionDetail } from "./subscription-detail";
 import { SubscriptionList } from "./subscription-list";
 import { useSubscriptions } from "./storage";
+import { Preferences } from "./types";
 import { buildCalendarMarkdown, formatCurrency, getMonthSubscriptions, getMonthlyTotal } from "./utils";
+
+interface RatesResponse {
+  base: string;
+  rates: Record<string, number>;
+}
 
 export default function ManageSubscription() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const { subscriptions, isLoading } = useSubscriptions();
+  const { primaryCurrency } = getPreferenceValues<Preferences>();
+
+  // Fetch live exchange rates from Frankfurter (free, no API key)
+  // base = primaryCurrency → rates[subCurrency] = how many subCurrency per 1 primaryCurrency
+  const { data: ratesData, isLoading: ratesLoading } = useFetch<RatesResponse>(
+    `https://api.frankfurter.app/latest?from=${primaryCurrency}`,
+    { keepPreviousData: true },
+  );
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const monthName = currentDate.toLocaleString("default", { month: "long" });
 
   const monthSubs = getMonthSubscriptions(month, year, subscriptions);
-  const monthTotal = getMonthlyTotal(subscriptions, month, year);
-  const primaryCurrency = subscriptions[0]?.currency ?? "INR";
+  const monthTotal = getMonthlyTotal(subscriptions, month, year, primaryCurrency, ratesData?.rates);
 
   const markdown = buildCalendarMarkdown(year, month, subscriptions);
 
@@ -34,14 +48,14 @@ export default function ManageSubscription() {
 
   return (
     <Detail
-      isLoading={isLoading}
+      isLoading={isLoading || ratesLoading}
       navigationTitle="Subscription Manager"
       markdown={markdown}
       metadata={
         <Detail.Metadata>
           <Detail.Metadata.Label
-            title="Monthly Total"
-            text={formatCurrency(monthTotal, primaryCurrency)}
+            title={`Monthly Total (${primaryCurrency})`}
+            text={ratesLoading ? "Loading…" : formatCurrency(monthTotal, primaryCurrency)}
             icon={Icon.BankNote}
           />
           <Detail.Metadata.Label title="Subscriptions" text={`${monthSubs.length} this month`} icon={Icon.Calendar} />

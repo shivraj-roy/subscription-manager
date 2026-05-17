@@ -1,5 +1,6 @@
+import { getPreferenceValues } from "@raycast/api";
 import { randomUUID } from "crypto";
-import { BillingCycle, Subscription } from "./types";
+import { BillingCycle, Preferences, Subscription } from "./types";
 
 export function generateId(): string {
   return randomUUID();
@@ -11,7 +12,14 @@ export function getFaviconUrl(name: string): string {
 }
 
 export function formatCurrency(amount: number, currency: string): string {
-  return new Intl.NumberFormat("en-IN", { style: "currency", currency, maximumFractionDigits: 2 }).format(amount);
+  const { roundingEnabled, abbreviateNumbers } = getPreferenceValues<Preferences>();
+  const useCompact = abbreviateNumbers && amount >= 10000;
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency,
+    maximumFractionDigits: roundingEnabled ? 0 : 2,
+    notation: useCompact ? "compact" : "standard",
+  }).format(amount);
 }
 
 function getMonthlyEquivalent(amount: number, cycle: BillingCycle): number {
@@ -27,7 +35,16 @@ function getMonthlyEquivalent(amount: number, cycle: BillingCycle): number {
   }
 }
 
-export function getMonthlyTotal(subscriptions: Subscription[], month: number, year: number): number {
+// rates: from Frankfurter API fetched with primaryCurrency as base.
+// e.g. base=INR → rates = { USD: 0.012, EUR: 0.011, ... }
+// conversion: subAmount / rates[subCurrency] = amount in primaryCurrency
+export function getMonthlyTotal(
+  subscriptions: Subscription[],
+  month: number,
+  year: number,
+  primaryCurrency?: string,
+  rates?: Record<string, number>,
+): number {
   return subscriptions
     .filter((s) => s.isActive)
     .filter((s) => {
@@ -37,7 +54,13 @@ export function getMonthlyTotal(subscriptions: Subscription[], month: number, ye
       if (s.billingCycle === "quarterly") return (month - start.getMonth() + 12) % 3 === 0;
       return true;
     })
-    .reduce((sum, s) => sum + getMonthlyEquivalent(s.amount, s.billingCycle), 0);
+    .reduce((sum, s) => {
+      const monthly = getMonthlyEquivalent(s.amount, s.billingCycle);
+      if (!primaryCurrency || !rates || s.currency === primaryCurrency) return sum + monthly;
+      const rate = rates[s.currency];
+      // rate = how many subCurrency per 1 primaryCurrency
+      return sum + (rate ? monthly / rate : monthly);
+    }, 0);
 }
 
 export function getSubscriptionsForDay(day: number, month: number, year: number, subscriptions: Subscription[]): Subscription[] {
