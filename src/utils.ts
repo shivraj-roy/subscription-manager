@@ -153,14 +153,14 @@ export const CATEGORIES = [
 ];
 
 export const CURRENCIES = [
-  { value: "INR", title: "INR — Indian Rupee" },
-  { value: "USD", title: "USD — US Dollar" },
-  { value: "EUR", title: "EUR — Euro" },
-  { value: "GBP", title: "GBP — British Pound" },
-  { value: "JPY", title: "JPY — Japanese Yen" },
-  { value: "AUD", title: "AUD — Australian Dollar" },
-  { value: "CAD", title: "CAD — Canadian Dollar" },
-  { value: "SGD", title: "SGD — Singapore Dollar" },
+  { value: "INR", title: "INR", flag: "🇮🇳" },
+  { value: "USD", title: "USD", flag: "🇺🇸" },
+  { value: "EUR", title: "EUR", flag: "🇪🇺" },
+  { value: "GBP", title: "GBP", flag: "🇬🇧" },
+  { value: "JPY", title: "JPY", flag: "🇯🇵" },
+  { value: "AUD", title: "AUD", flag: "🇦🇺" },
+  { value: "CAD", title: "CAD", flag: "🇨🇦" },
+  { value: "SGD", title: "SGD", flag: "🇸🇬" },
 ];
 
 export const LISTS = ["Personal", "Work", "Family"];

@@ -31,14 +31,14 @@
       "required": false,
       "default": "INR",
       "data": [
-        { "title": "INR — Indian Rupee", "value": "INR" },
-        { "title": "USD — US Dollar", "value": "USD" },
-        { "title": "EUR — Euro", "value": "EUR" },
-        { "title": "GBP — British Pound", "value": "GBP" },
-        { "title": "JPY — Japanese Yen", "value": "JPY" },
-        { "title": "AUD — Australian Dollar", "value": "AUD" },
-        { "title": "CAD — Canadian Dollar", "value": "CAD" },
-        { "title": "SGD — Singapore Dollar", "value": "SGD" }
+        { "title": "🇮🇳 Indian Rupee (INR)", "value": "INR" },
+        { "title": "🇺🇸 US Dollar (USD)", "value": "USD" },
+        { "title": "🇪🇺 Euro (EUR)", "value": "EUR" },
+        { "title": "🇬🇧 British Pound (GBP)", "value": "GBP" },
+        { "title": "🇯🇵 Japanese Yen (JPY)", "value": "JPY" },
+        { "title": "🇦🇺 Australian Dollar (AUD)", "value": "AUD" },
+        { "title": "🇨🇦 Canadian Dollar (CAD)", "value": "CAD" },
+        { "title": "🇸🇬 Singapore Dollar (SGD)", "value": "SGD" }
       ]
     },
     {

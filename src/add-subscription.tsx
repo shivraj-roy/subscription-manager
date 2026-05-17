@@ -73,7 +73,7 @@ export function AddSubscriptionForm({ defaultBillingDay: _defaultBillingDay }: {
       <Form.TextField id="amount" title="Amount" placeholder="9.99" />
       <Form.Dropdown id="currency" title="Currency" defaultValue="INR">
         {CURRENCIES.map((c) => (
-          <Form.Dropdown.Item key={c.value} value={c.value} title={c.title} />
+          <Form.Dropdown.Item key={c.value} value={c.value} title={c.title} icon={c.flag} />
         ))}
       </Form.Dropdown>
 

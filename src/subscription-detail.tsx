@@ -66,7 +66,7 @@ function EditForm({ sub, onSave }: { sub: Subscription; onSave: (updates: Partia
       <Form.TextField id="amount" title="Amount" defaultValue={String(sub.amount)} />
       <Form.Dropdown id="currency" title="Currency" defaultValue={sub.currency}>
         {CURRENCIES.map((c) => (
-          <Form.Dropdown.Item key={c.value} value={c.value} title={c.title} />
+          <Form.Dropdown.Item key={c.value} value={c.value} title={c.title} icon={c.flag} />
         ))}
       </Form.Dropdown>
       <Form.Separator />
