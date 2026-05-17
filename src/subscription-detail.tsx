@@ -2,10 +2,18 @@ import { Action, ActionPanel, Detail, Form, Icon, Toast, confirmAlert, showToast
 import { useState } from "react";
 import { useSubscriptions } from "./storage";
 import { BillingCycle, Subscription } from "./types";
-import { CATEGORIES, CURRENCIES, LISTS, PRESET_PAYMENT_METHODS, formatCurrency } from "./utils";
+import {
+  CATEGORIES,
+  CURRENCIES,
+  LISTS,
+  PRESET_PAYMENT_METHODS,
+  PRESET_SERVICES,
+  formatCurrency,
+  getFaviconUrl,
+} from "./utils";
 
 interface EditFormValues {
-  name: string;
+  customName: string;
   amount: string;
   currency: string;
   billingCycle: string;
@@ -14,14 +22,27 @@ interface EditFormValues {
   customPaymentMethod: string;
   list: string;
   iconUrl: string;
-  color: string;
   notes: string;
 }
 
 function EditForm({ sub, onSave }: { sub: Subscription; onSave: (updates: Partial<Subscription>) => Promise<void> }) {
   const { pop } = useNavigation();
-  const isPreset = PRESET_PAYMENT_METHODS.some((p) => p.value === sub.paymentMethod);
-  const [paymentSelection, setPaymentSelection] = useState(isPreset ? (sub.paymentMethod ?? PRESET_PAYMENT_METHODS[0].value) : "__custom__");
+  const isPresetPayment = PRESET_PAYMENT_METHODS.some((p) => p.value === sub.paymentMethod);
+  const [paymentSelection, setPaymentSelection] = useState(
+    isPresetPayment ? (sub.paymentMethod ?? PRESET_PAYMENT_METHODS[0].value) : "__custom__",
+  );
+
+  const matchedService = PRESET_SERVICES.find((s) => s.name === sub.name);
+  const [serviceSelection, setServiceSelection] = useState(matchedService ? sub.name : "__custom__");
+  const [category, setCategory] = useState(sub.category);
+  const isCustomService = serviceSelection === "__custom__";
+  const serviceCategories = [...new Set(PRESET_SERVICES.map((s) => s.category))];
+
+  function handleServiceChange(value: string) {
+    setServiceSelection(value);
+    const preset = PRESET_SERVICES.find((s) => s.name === value);
+    if (preset) setCategory(preset.category);
+  }
 
   async function handleSubmit(values: EditFormValues) {
     const amount = parseFloat(values.amount);
@@ -30,11 +51,22 @@ function EditForm({ sub, onSave }: { sub: Subscription; onSave: (updates: Partia
       return;
     }
 
+    const name = isCustomService ? values.customName?.trim() : serviceSelection;
+    if (!name) {
+      await showToast({ style: Toast.Style.Failure, title: "Service name required" });
+      return;
+    }
+
+    const preset = PRESET_SERVICES.find((s) => s.name === serviceSelection);
+    const iconUrl = preset
+      ? `https://www.google.com/s2/favicons?domain=${preset.domain}&sz=64`
+      : values.iconUrl || getFaviconUrl(values.customName);
+
     const paymentMethod =
       paymentSelection === "__custom__" ? values.customPaymentMethod?.trim() || undefined : paymentSelection;
 
     await onSave({
-      name: values.name.trim(),
+      name,
       amount,
       currency: values.currency,
       billingCycle: values.billingCycle as BillingCycle,
@@ -43,8 +75,7 @@ function EditForm({ sub, onSave }: { sub: Subscription; onSave: (updates: Partia
       category: values.category,
       paymentMethod,
       list: values.list,
-      iconUrl: values.iconUrl || undefined,
-      color: values.color || undefined,
+      iconUrl,
       notes: values.notes || undefined,
     });
 
@@ -61,7 +92,26 @@ function EditForm({ sub, onSave }: { sub: Subscription; onSave: (updates: Partia
         </ActionPanel>
       }
     >
-      <Form.TextField id="name" title="Service Name" defaultValue={sub.name} />
+      <Form.Dropdown id="serviceSelection" title="Service" value={serviceSelection} onChange={handleServiceChange}>
+        {serviceCategories.map((cat) => (
+          <Form.Dropdown.Section key={cat} title={cat}>
+            {PRESET_SERVICES.filter((s) => s.category === cat).map((s) => (
+              <Form.Dropdown.Item
+                key={s.name}
+                value={s.name}
+                title={s.name}
+                icon={{ source: `https://www.google.com/s2/favicons?domain=${s.domain}&sz=64`, fallback: Icon.Globe }}
+              />
+            ))}
+          </Form.Dropdown.Section>
+        ))}
+        <Form.Dropdown.Section>
+          <Form.Dropdown.Item value="__custom__" title="Other…" icon={Icon.Pencil} />
+        </Form.Dropdown.Section>
+      </Form.Dropdown>
+      {isCustomService && (
+        <Form.TextField id="customName" title="Service Name" defaultValue={matchedService ? "" : sub.name} />
+      )}
       <Form.Separator />
       <Form.TextField id="amount" title="Amount" defaultValue={String(sub.amount)} />
       <Form.Dropdown id="currency" title="Currency" defaultValue={sub.currency}>
@@ -83,7 +133,7 @@ function EditForm({ sub, onSave }: { sub: Subscription; onSave: (updates: Partia
         type={Form.DatePicker.Type.Date}
       />
       <Form.Separator />
-      <Form.Dropdown id="category" title="Category" defaultValue={sub.category}>
+      <Form.Dropdown id="category" title="Category" value={category} onChange={setCategory}>
         {CATEGORIES.map((cat) => (
           <Form.Dropdown.Item key={cat} value={cat} title={cat} />
         ))}
@@ -98,7 +148,7 @@ function EditForm({ sub, onSave }: { sub: Subscription; onSave: (updates: Partia
         <Form.TextField
           id="customPaymentMethod"
           title="Custom Payment Method"
-          defaultValue={isPreset ? "" : (sub.paymentMethod ?? "")}
+          defaultValue={isPresetPayment ? "" : (sub.paymentMethod ?? "")}
           placeholder="e.g. PayPal, Google Pay, Wallet…"
         />
       )}
@@ -108,8 +158,7 @@ function EditForm({ sub, onSave }: { sub: Subscription; onSave: (updates: Partia
         ))}
       </Form.Dropdown>
       <Form.Separator />
-      <Form.TextField id="iconUrl" title="Icon URL" defaultValue={sub.iconUrl ?? ""} />
-      <Form.TextField id="color" title="Brand Color" defaultValue={sub.color ?? ""} />
+      {isCustomService && <Form.TextField id="iconUrl" title="Icon URL" defaultValue={sub.iconUrl ?? ""} />}
       <Form.TextArea id="notes" title="Notes" defaultValue={sub.notes ?? ""} />
     </Form>
   );
@@ -175,12 +224,21 @@ ${sub.notes ? `---\n\n${sub.notes}` : ""}
           <Detail.Metadata.Label title="List" text={sub.list} />
           {sub.paymentMethod && <Detail.Metadata.Label title="Paid With" text={sub.paymentMethod} />}
           <Detail.Metadata.Separator />
-          <Detail.Metadata.Label title="Status" text={sub.isActive ? "Active" : "Paused"} icon={sub.isActive ? Icon.CheckCircle : Icon.Circle} />
+          <Detail.Metadata.Label
+            title="Status"
+            text={sub.isActive ? "Active" : "Paused"}
+            icon={sub.isActive ? Icon.CheckCircle : Icon.Circle}
+          />
         </Detail.Metadata>
       }
       actions={
         <ActionPanel>
-          <Action title="Edit" icon={Icon.Pencil} onAction={() => setEditing(true)} shortcut={{ modifiers: ["cmd"], key: "e" }} />
+          <Action
+            title="Edit"
+            icon={Icon.Pencil}
+            onAction={() => setEditing(true)}
+            shortcut={{ modifiers: ["cmd"], key: "e" }}
+          />
           <Action
             title={sub.isActive ? "Pause Subscription" : "Resume Subscription"}
             icon={sub.isActive ? Icon.Pause : Icon.Play}

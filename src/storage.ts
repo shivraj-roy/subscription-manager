@@ -35,7 +35,9 @@ export function useSubscriptions() {
       setIsLoading(false);
     }
 
-    return () => { _listeners.delete(listener); };
+    return () => {
+      _listeners.delete(listener);
+    };
   }, []);
 
   async function addSubscription(sub: Subscription) {

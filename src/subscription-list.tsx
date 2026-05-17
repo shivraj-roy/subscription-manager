@@ -94,7 +94,12 @@ export function SubscriptionList() {
                   <Action title="Sort by Category" onAction={() => setSortKey("category")} />
                 </ActionPanel.Section>
                 <ActionPanel.Section>
-                  <Action.Push title="Add Subscription" icon={Icon.Plus} target={<AddSubscriptionForm />} shortcut={{ modifiers: ["cmd"], key: "n" }} />
+                  <Action.Push
+                    title="Add Subscription"
+                    icon={Icon.Plus}
+                    target={<AddSubscriptionForm />}
+                    shortcut={{ modifiers: ["cmd"], key: "n" }}
+                  />
                 </ActionPanel.Section>
               </ActionPanel>
             }

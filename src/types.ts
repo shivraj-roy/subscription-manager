@@ -29,4 +29,3 @@ export interface Subscription {
   color?: string;
   isActive: boolean;
 }
-

@@ -63,7 +63,12 @@ export function getMonthlyTotal(
     }, 0);
 }
 
-export function getSubscriptionsForDay(day: number, month: number, year: number, subscriptions: Subscription[]): Subscription[] {
+export function getSubscriptionsForDay(
+  day: number,
+  month: number,
+  year: number,
+  subscriptions: Subscription[],
+): Subscription[] {
   return subscriptions.filter((s) => {
     if (!s.isActive || s.billingDay !== day) return false;
     const start = new Date(s.startDate);
@@ -105,7 +110,10 @@ export function buildCalendarMarkdown(year: number, month: number, subscriptions
   let week: (number | null)[] = new Array(firstDayOfWeek).fill(null);
   for (let d = 1; d <= daysInMonth; d++) {
     week.push(d);
-    if (week.length === 7) { weeks.push(week); week = []; }
+    if (week.length === 7) {
+      weeks.push(week);
+      week = [];
+    }
   }
   if (week.length > 0) {
     while (week.length < 7) week.push(null);
@@ -133,10 +141,16 @@ export function buildCalendarMarkdown(year: number, month: number, subscriptions
   const table = [header, separator, ...rows].join("\n");
 
   const monthSubs = getMonthSubscriptions(month, year, subscriptions);
-  const subsList = monthSubs.length > 0
-    ? "\n\n---\n\n### Subscriptions this month\n\n" +
-      monthSubs.map((s) => `- **${s.billingDay} ${monthName}** — ${s.name} · ${formatCurrency(s.amount, s.currency)} / ${s.billingCycle}`).join("\n")
-    : "\n\n---\n\n*No subscriptions this month. Press **⌘N** to add one.*";
+  const subsList =
+    monthSubs.length > 0
+      ? "\n\n---\n\n### Subscriptions this month\n\n" +
+        monthSubs
+          .map(
+            (s) =>
+              `- **${s.billingDay} ${monthName}** — ${s.name} · ${formatCurrency(s.amount, s.currency)} / ${s.billingCycle}`,
+          )
+          .join("\n")
+      : "\n\n---\n\n*No subscriptions this month. Press **⌘N** to add one.*";
 
   return `## ${monthName} ${year}\n\n${table}${subsList}`;
 }
@@ -144,6 +158,7 @@ export function buildCalendarMarkdown(year: number, month: number, subscriptions
 export const CATEGORIES = [
   "Entertainment",
   "Productivity",
+  "AI Tools",
   "Health & Fitness",
   "News & Media",
   "Software & Tools",
@@ -169,4 +184,51 @@ export const PRESET_PAYMENT_METHODS = [
   { value: "Credit Card", title: "Credit Card", icon: "💳" },
   { value: "Debit Card", title: "Debit Card", icon: "💳" },
   { value: "UPI", title: "UPI", icon: "📱" },
+];
+
+export const PRESET_SERVICES = [
+  // Entertainment
+  { name: "Netflix", domain: "netflix.com", category: "Entertainment" },
+  { name: "Spotify", domain: "spotify.com", category: "Entertainment" },
+  { name: "YouTube", domain: "youtube.com", category: "Entertainment" },
+  { name: "Apple Music", domain: "music.apple.com", category: "Entertainment" },
+  { name: "Apple TV+", domain: "tv.apple.com", category: "Entertainment" },
+  { name: "Disney+", domain: "disneyplus.com", category: "Entertainment" },
+  { name: "Amazon Prime", domain: "primevideo.com", category: "Entertainment" },
+  { name: "HBO Max", domain: "max.com", category: "Entertainment" },
+  { name: "Hulu", domain: "hulu.com", category: "Entertainment" },
+  { name: "Crunchyroll", domain: "crunchyroll.com", category: "Entertainment" },
+  { name: "Audible", domain: "audible.com", category: "Entertainment" },
+  { name: "Nintendo Switch Online", domain: "nintendo.com", category: "Entertainment" },
+  { name: "PlayStation", domain: "playstation.com", category: "Entertainment" },
+  { name: "Xbox Game Pass", domain: "xbox.com", category: "Entertainment" },
+  // Productivity
+  { name: "Notion", domain: "notion.so", category: "Productivity" },
+  { name: "Microsoft 365", domain: "microsoft.com", category: "Productivity" },
+  { name: "Slack", domain: "slack.com", category: "Productivity" },
+  { name: "Zoom", domain: "zoom.us", category: "Productivity" },
+  { name: "LinkedIn", domain: "linkedin.com", category: "Productivity" },
+  { name: "Duolingo", domain: "duolingo.com", category: "Productivity" },
+  // AI Tools
+  { name: "Claude", domain: "claude.ai", category: "AI Tools" },
+  { name: "ChatGPT", domain: "openai.com", category: "AI Tools" },
+  { name: "Cursor", domain: "cursor.com", category: "AI Tools" },
+  { name: "Gemini", domain: "gemini.google.com", category: "AI Tools" },
+  { name: "Perplexity", domain: "perplexity.ai", category: "AI Tools" },
+  { name: "Midjourney", domain: "midjourney.com", category: "AI Tools" },
+  { name: "GitHub Copilot", domain: "github.com", category: "AI Tools" },
+  { name: "ElevenLabs", domain: "elevenlabs.io", category: "AI Tools" },
+  { name: "Runway", domain: "runwayml.com", category: "AI Tools" },
+  // Software & Tools
+  { name: "GitHub", domain: "github.com", category: "Software & Tools" },
+  { name: "Adobe Creative Cloud", domain: "adobe.com", category: "Software & Tools" },
+  { name: "Figma", domain: "figma.com", category: "Software & Tools" },
+  { name: "Canva", domain: "canva.com", category: "Software & Tools" },
+  { name: "1Password", domain: "1password.com", category: "Software & Tools" },
+  { name: "NordVPN", domain: "nordvpn.com", category: "Software & Tools" },
+  { name: "X Premium", domain: "x.com", category: "Software & Tools" },
+  // Cloud Storage
+  { name: "Google One", domain: "one.google.com", category: "Cloud Storage" },
+  { name: "iCloud+", domain: "icloud.com", category: "Cloud Storage" },
+  { name: "Dropbox", domain: "dropbox.com", category: "Cloud Storage" },
 ];
