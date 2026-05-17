@@ -1,7 +1,6 @@
 import {
   Action,
   ActionPanel,
-  Color,
   Detail,
   Form,
   Icon,
@@ -213,11 +212,10 @@ export function SubscriptionDetail({ id, startEditing = false }: { id: string; s
 |---|---|
 | Amount | **${formatCurrency(sub.amount, sub.currency)}** / ${sub.billingCycle} |
 | Next Billing | ${nextBilling} (day ${sub.billingDay}) |
+| Started | ${new Date(sub.startDate).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })} |
 | Category | ${sub.category} |
 | List | ${sub.list} |
-| Status | ${sub.status.charAt(0).toUpperCase() + sub.status.slice(1)} |
-| Started | ${new Date(sub.startDate).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })} |
-${sub.paymentMethod ? `| Payment Method | ${sub.paymentMethod} |` : ""}
+${sub.paymentMethod ? `| Paid With | ${sub.paymentMethod} |\n` : ""}| Status | ${sub.status.charAt(0).toUpperCase() + sub.status.slice(1)} |
 
 ${sub.notes ? `---\n\n${sub.notes}` : ""}
 `.trim();
@@ -226,27 +224,6 @@ ${sub.notes ? `---\n\n${sub.notes}` : ""}
     <Detail
       navigationTitle={sub.name}
       markdown={markdown}
-      metadata={
-        <Detail.Metadata>
-          <Detail.Metadata.Label title="Amount" text={formatCurrency(sub.amount, sub.currency)} />
-          <Detail.Metadata.Label title="Cycle" text={sub.billingCycle} />
-          <Detail.Metadata.Label title="Next Billing" text={nextBilling} />
-          <Detail.Metadata.Separator />
-          <Detail.Metadata.Label title="Category" text={sub.category} />
-          <Detail.Metadata.Label title="List" text={sub.list} />
-          {sub.paymentMethod && <Detail.Metadata.Label title="Paid With" text={sub.paymentMethod} />}
-          <Detail.Metadata.Separator />
-          <Detail.Metadata.Label
-            title="Status"
-            text={sub.status.charAt(0).toUpperCase() + sub.status.slice(1)}
-            icon={
-              sub.status === "active"
-                ? { source: Icon.CheckCircle, tintColor: Color.Green }
-                : { source: Icon.Pause, tintColor: Color.Yellow }
-            }
-          />
-        </Detail.Metadata>
-      }
       actions={
         <ActionPanel>
           <Action
