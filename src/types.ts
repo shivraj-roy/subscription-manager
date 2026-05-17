@@ -1,4 +1,4 @@
-export type BillingCycle = "monthly" | "yearly" | "weekly" | "quarterly";
+export type BillingCycle = "monthly" | "yearly" | "weekly" | "quarterly" | "half-yearly";
 
 export interface Preferences {
   primaryCurrency: string;

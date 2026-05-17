@@ -22,6 +22,21 @@ export function formatCurrency(amount: number, currency: string): string {
   }).format(amount);
 }
 
+export function formatCycle(cycle: BillingCycle): string {
+  switch (cycle) {
+    case "monthly":
+      return "/mo";
+    case "yearly":
+      return "/yr";
+    case "quarterly":
+      return "/qtr";
+    case "half-yearly":
+      return "/6mo";
+    case "weekly":
+      return "/wk";
+  }
+}
+
 function getMonthlyEquivalent(amount: number, cycle: BillingCycle): number {
   switch (cycle) {
     case "monthly":
@@ -30,6 +45,8 @@ function getMonthlyEquivalent(amount: number, cycle: BillingCycle): number {
       return amount / 12;
     case "quarterly":
       return amount / 3;
+    case "half-yearly":
+      return amount / 6;
     case "weekly":
       return amount * 4.33;
   }
@@ -52,6 +69,7 @@ export function getMonthlyTotal(
       const start = new Date(s.startDate);
       if (s.billingCycle === "yearly") return start.getMonth() === month;
       if (s.billingCycle === "quarterly") return (month - start.getMonth() + 12) % 3 === 0;
+      if (s.billingCycle === "half-yearly") return (month - start.getMonth() + 12) % 6 === 0;
       return true;
     })
     .reduce((sum, s) => {
@@ -81,6 +99,8 @@ export function getSubscriptionsForDay(
         return start.getMonth() === month;
       case "quarterly":
         return (month - start.getMonth() + 12) % 3 === 0;
+      case "half-yearly":
+        return (month - start.getMonth() + 12) % 6 === 0;
       case "weekly":
         return true;
     }
@@ -95,6 +115,7 @@ export function getMonthSubscriptions(month: number, year: number, subscriptions
       const start = new Date(s.startDate);
       if (s.billingCycle === "yearly") return start.getMonth() === month;
       if (s.billingCycle === "quarterly") return (month - start.getMonth() + 12) % 3 === 0;
+      if (s.billingCycle === "half-yearly") return (month - start.getMonth() + 12) % 6 === 0;
       return true;
     })
     .sort((a, b) => a.billingDay - b.billingDay);
@@ -140,19 +161,7 @@ export function buildCalendarMarkdown(year: number, month: number, subscriptions
 
   const table = [header, separator, ...rows].join("\n");
 
-  const monthSubs = getMonthSubscriptions(month, year, subscriptions);
-  const subsList =
-    monthSubs.length > 0
-      ? "\n\n---\n\n### Subscriptions this month\n\n" +
-        monthSubs
-          .map(
-            (s) =>
-              `- **${s.billingDay} ${monthName}** — ${s.name} · ${formatCurrency(s.amount, s.currency)} / ${s.billingCycle}`,
-          )
-          .join("\n")
-      : "\n\n---\n\n*No subscriptions this month. Press **⌘N** to add one.*";
-
-  return `## ${monthName} ${year}\n\n${table}${subsList}`;
+  return `## ${monthName} ${year}\n\n${table}`;
 }
 
 export const CATEGORIES = [

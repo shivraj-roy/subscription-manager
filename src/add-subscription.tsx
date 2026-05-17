@@ -139,6 +139,7 @@ export function AddSubscriptionForm() {
         <Form.Dropdown.Item value="monthly" title="Monthly" />
         <Form.Dropdown.Item value="yearly" title="Yearly" />
         <Form.Dropdown.Item value="quarterly" title="Quarterly (every 3 months)" />
+        <Form.Dropdown.Item value="half-yearly" title="Half Yearly (every 6 months)" />
         <Form.Dropdown.Item value="weekly" title="Weekly" />
       </Form.Dropdown>
       <Form.DatePicker id="startDate" title="Start Date" defaultValue={new Date()} type={Form.DatePicker.Type.Date} />

@@ -124,6 +124,7 @@ function EditForm({ sub, onSave }: { sub: Subscription; onSave: (updates: Partia
         <Form.Dropdown.Item value="monthly" title="Monthly" />
         <Form.Dropdown.Item value="yearly" title="Yearly" />
         <Form.Dropdown.Item value="quarterly" title="Quarterly" />
+        <Form.Dropdown.Item value="half-yearly" title="Half Yearly" />
         <Form.Dropdown.Item value="weekly" title="Weekly" />
       </Form.Dropdown>
       <Form.DatePicker

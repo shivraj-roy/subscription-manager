@@ -6,7 +6,7 @@ import { SubscriptionDetail } from "./subscription-detail";
 import { SubscriptionList } from "./subscription-list";
 import { useSubscriptions } from "./storage";
 import { Preferences } from "./types";
-import { buildCalendarMarkdown, formatCurrency, getMonthSubscriptions, getMonthlyTotal } from "./utils";
+import { buildCalendarMarkdown, formatCurrency, formatCycle, getMonthSubscriptions, getMonthlyTotal } from "./utils";
 
 interface RatesResponse {
   base: string;
@@ -65,7 +65,7 @@ export default function ManageSubscription() {
               <Detail.Metadata.Label
                 key={sub.id}
                 title={`${sub.billingDay} ${monthName}`}
-                text={`${sub.name} · ${formatCurrency(sub.amount, sub.currency)}`}
+                text={`${sub.name} · ${formatCurrency(sub.amount, sub.currency)} ${formatCycle(sub.billingCycle)}`}
                 icon={{ source: sub.iconUrl ?? Icon.CreditCard, fallback: Icon.CreditCard }}
               />
             ))
