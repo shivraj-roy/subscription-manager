@@ -81,6 +81,15 @@ export function getMonthlyTotal(
     }, 0);
 }
 
+export function getNextBillingDate(sub: Subscription): Date {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const y = today.getFullYear();
+  const m = today.getMonth();
+  const candidate = new Date(y, m, sub.billingDay);
+  return candidate >= today ? candidate : new Date(y, m + 1, sub.billingDay);
+}
+
 export function getSubscriptionsForDay(
   day: number,
   month: number,

@@ -9,6 +9,8 @@ export interface Preferences {
   firstReminderTime: string;
   secondReminderDays: string;
   secondReminderTime: string;
+  showTotalIn: "title" | "dropdown";
+  dropdownContent: "full-month" | "upcoming" | "minimal";
 }
 
 export interface CalendarDay {

@@ -20,6 +20,39 @@
       "title": "Manage Subscription",
       "description": "",
       "mode": "view"
+    },
+    {
+      "name": "menubar",
+      "title": "Subscriptions Menubar",
+      "description": "Monthly total and upcoming bills in the menu bar",
+      "mode": "menu-bar",
+      "preferences": [
+        {
+          "name": "showTotalIn",
+          "title": "Show Monthly Total",
+          "description": "Where to display the monthly total",
+          "type": "dropdown",
+          "required": false,
+          "default": "title",
+          "data": [
+            { "title": "Beside icon", "value": "title" },
+            { "title": "In dropdown", "value": "dropdown" }
+          ]
+        },
+        {
+          "name": "dropdownContent",
+          "title": "Show in Menu",
+          "description": "Content to display when opening the menubar",
+          "type": "dropdown",
+          "required": false,
+          "default": "upcoming",
+          "data": [
+            { "title": "Full month", "value": "full-month" },
+            { "title": "Upcoming only", "value": "upcoming" },
+            { "title": "Minimal", "value": "minimal" }
+          ]
+        }
+      ]
     }
   ],
   "preferences": [
