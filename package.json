@@ -22,6 +22,18 @@
       "mode": "view"
     },
     {
+      "name": "add-subscription",
+      "title": "Add Subscription",
+      "description": "Add a new subscription",
+      "mode": "view"
+    },
+    {
+      "name": "subscription-list",
+      "title": "All Subscriptions",
+      "description": "View and manage all your subscriptions",
+      "mode": "view"
+    },
+    {
       "name": "menubar",
       "title": "Subscriptions Menubar",
       "description": "Monthly total and upcoming bills in the menu bar",

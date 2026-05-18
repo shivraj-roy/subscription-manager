@@ -179,3 +179,7 @@ export function AddSubscriptionForm() {
     </Form>
   );
 }
+
+export default function AddSubscriptionCommand() {
+  return <AddSubscriptionForm />;
+}

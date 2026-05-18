@@ -151,3 +151,7 @@ export function SubscriptionList() {
     </List>
   );
 }
+
+export default function SubscriptionListCommand() {
+  return <SubscriptionList />;
+}

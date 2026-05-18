@@ -172,6 +172,18 @@ export default function MenubarCommand() {
 
       <MenuBarExtra.Section>
         <MenuBarExtra.Item
+          title="Add Subscription"
+          icon={Icon.Plus}
+          shortcut={{ modifiers: ["cmd"], key: "n" }}
+          onAction={() => launchCommand({ name: "add-subscription", type: LaunchType.UserInitiated })}
+        />
+        <MenuBarExtra.Item
+          title="All Subscriptions"
+          icon={Icon.List}
+          shortcut={{ modifiers: ["cmd"], key: "l" }}
+          onAction={() => launchCommand({ name: "subscription-list", type: LaunchType.UserInitiated })}
+        />
+        <MenuBarExtra.Item
           title="Open Calendar"
           icon={Icon.Calendar}
           shortcut={{ modifiers: ["cmd"], key: "o" }}
