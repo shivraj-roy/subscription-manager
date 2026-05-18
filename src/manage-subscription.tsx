@@ -76,6 +76,12 @@ export default function ManageSubscription() {
       }
       actions={
         <ActionPanel>
+          <Action.Push
+            title="All Subscriptions"
+            icon={Icon.List}
+            shortcut={{ modifiers: ["cmd"], key: "l" }}
+            target={<SubscriptionList />}
+          />
           <ActionPanel.Section title="Navigation">
             <Action
               title="Previous Month"
@@ -104,12 +110,6 @@ export default function ManageSubscription() {
               shortcut={{ modifiers: ["cmd"], key: "n" }}
               target={<AddSubscriptionForm />}
             />
-            <Action.Push
-              title="All Subscriptions"
-              icon={Icon.List}
-              shortcut={{ modifiers: ["cmd"], key: "l" }}
-              target={<SubscriptionList />}
-            />
           </ActionPanel.Section>
 
           {monthSubs.length > 0 && (
@@ -117,7 +117,7 @@ export default function ManageSubscription() {
               {monthSubs.map((sub) => (
                 <Action.Push
                   key={sub.id}
-                  title={`${sub.billingDay} ${monthName} — ${sub.name}`}
+                  title={`${sub.billingDay} ${monthName} · ${sub.name}`}
                   icon={{ source: sub.iconUrl ?? Icon.CreditCard, fallback: Icon.CreditCard }}
                   target={<SubscriptionDetail id={sub.id} />}
                 />
