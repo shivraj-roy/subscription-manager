@@ -1,59 +1,11 @@
 import { Icon, LaunchType, LocalStorage, MenuBarExtra, getPreferenceValues, launchCommand } from "@raycast/api";
 import { useFetch } from "@raycast/utils";
-import { exec } from "child_process";
-import { useEffect } from "react";
 import { useSubscriptions } from "./storage";
 import { Preferences, Subscription } from "./types";
-import { formatCurrency, formatCycle, getMonthlyTotal, getNextBillingDate, getSubscriptionsForDay } from "./utils";
+import { formatCurrency, formatCycle, getMonthlyTotal, getSubscriptionsForDay } from "./utils";
 
 interface RatesResponse {
   rates: Record<string, number>;
-}
-
-function diffDays(from: Date, to: Date): number {
-  const a = new Date(from.getFullYear(), from.getMonth(), from.getDate());
-  const b = new Date(to.getFullYear(), to.getMonth(), to.getDate());
-  return Math.round((b.getTime() - a.getTime()) / (1000 * 60 * 60 * 24));
-}
-
-function sendNotification(title: string, body: string) {
-  const t = title.replace(/"/g, '\\"');
-  const b = body.replace(/"/g, '\\"');
-  exec(`osascript -e 'display notification "${b}" with title "${t}"'`);
-}
-
-async function checkAndFireNotifications(subscriptions: Subscription[], prefs: Preferences) {
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-  const reminders = [
-    { key: "first", days: prefs.firstReminderDays, time: prefs.firstReminderTime },
-    { key: "second", days: prefs.secondReminderDays, time: prefs.secondReminderTime },
-  ].filter((r) => r.days !== "disabled");
-
-  for (const sub of subscriptions.filter((s) => s.status === "active")) {
-    const nextBilling = getNextBillingDate(sub);
-    const daysUntil = diffDays(today, nextBilling);
-    const billingKey = `${nextBilling.getFullYear()}-${nextBilling.getMonth()}-${nextBilling.getDate()}`;
-
-    for (const reminder of reminders) {
-      if (daysUntil !== parseInt(reminder.days)) continue;
-
-      const [hour, minute] = reminder.time.split(":").map(Number);
-      if (now.getHours() < hour || (now.getHours() === hour && now.getMinutes() < minute)) continue;
-
-      const notifKey = `notif-${sub.id}-${billingKey}-${reminder.key}`;
-      if (await LocalStorage.getItem<string>(notifKey)) continue;
-
-      const body =
-        daysUntil === 0
-          ? `${sub.name} bills today — ${formatCurrency(sub.amount, sub.currency)}`
-          : `${sub.name} bills in ${daysUntil} day${daysUntil > 1 ? "s" : ""} — ${formatCurrency(sub.amount, sub.currency)}`;
-
-      sendNotification("Subscription Due", body);
-      await LocalStorage.setItem(notifKey, "1");
-    }
-  }
 }
 
 export default function MenubarCommand() {
@@ -68,12 +20,6 @@ export default function MenubarCommand() {
     `https://api.frankfurter.app/latest?from=${prefs.primaryCurrency}`,
     { keepPreviousData: true },
   );
-
-  useEffect(() => {
-    if (!isLoading && subscriptions.length > 0) {
-      checkAndFireNotifications(subscriptions, prefs);
-    }
-  }, [isLoading]);
 
   const monthlyTotal = getMonthlyTotal(subscriptions, month, year, prefs.primaryCurrency, ratesData?.rates);
   const totalStr = isLoading ? "" : formatCurrency(monthlyTotal, prefs.primaryCurrency);

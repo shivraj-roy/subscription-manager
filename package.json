@@ -34,6 +34,13 @@
       "mode": "view"
     },
     {
+      "name": "notification-background",
+      "title": "Subscription Notifications",
+      "description": "Sends reminders before your subscriptions bill",
+      "mode": "no-view",
+      "interval": "5m"
+    },
+    {
       "name": "menubar",
       "title": "Subscriptions Menubar",
       "description": "Monthly total and upcoming bills in the menu bar",

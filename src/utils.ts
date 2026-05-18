@@ -81,13 +81,14 @@ export function getMonthlyTotal(
     }, 0);
 }
 
-export function getNextBillingDate(sub: Subscription): Date {
+export function getNextBillingDate(sub: Subscription): Date | null {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const y = today.getFullYear();
-  const m = today.getMonth();
-  const candidate = new Date(y, m, sub.billingDay);
-  return candidate >= today ? candidate : new Date(y, m + 1, sub.billingDay);
+  for (let i = 0; i <= 366; i++) {
+    const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
+    if (getSubscriptionsForDay(d.getDate(), d.getMonth(), d.getFullYear(), [sub]).length > 0) return d;
+  }
+  return null;
 }
 
 export function getSubscriptionsForDay(
