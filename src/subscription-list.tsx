@@ -65,6 +65,7 @@ export function SubscriptionList() {
                   <Action
                     title={sub.status === "active" ? "Pause" : "Resume"}
                     icon={sub.status === "active" ? Icon.Pause : Icon.Play}
+                    shortcut={{ modifiers: ["cmd", "shift"], key: "p" }}
                     onAction={async () => {
                       const next = sub.status === "active" ? "paused" : "active";
                       await updateSubscription(sub.id, { status: next });
