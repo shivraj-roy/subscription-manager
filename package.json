@@ -58,6 +58,54 @@
       "required": false,
       "default": true,
       "label": "Abbreviated Numbers"
+    },
+    {
+      "name": "firstReminderDays",
+      "title": "First Reminder",
+      "description": "Days before billing date to notify",
+      "type": "dropdown",
+      "required": false,
+      "default": "1",
+      "data": [
+        { "title": "Disabled", "value": "disabled" },
+        { "title": "Same day", "value": "0" },
+        { "title": "1 day before", "value": "1" },
+        { "title": "3 days before", "value": "3" },
+        { "title": "7 days before", "value": "7" }
+      ]
+    },
+    {
+      "name": "firstReminderTime",
+      "title": "First Reminder Time",
+      "description": "Notification time in 24h format (e.g. 09:00)",
+      "type": "textfield",
+      "required": false,
+      "default": "09:00",
+      "placeholder": "09:00"
+    },
+    {
+      "name": "secondReminderDays",
+      "title": "Second Reminder",
+      "description": "Optional second reminder before billing date",
+      "type": "dropdown",
+      "required": false,
+      "default": "disabled",
+      "data": [
+        { "title": "Disabled", "value": "disabled" },
+        { "title": "Same day", "value": "0" },
+        { "title": "1 day before", "value": "1" },
+        { "title": "3 days before", "value": "3" },
+        { "title": "7 days before", "value": "7" }
+      ]
+    },
+    {
+      "name": "secondReminderTime",
+      "title": "Second Reminder Time",
+      "description": "Notification time in 24h format (e.g. 18:00)",
+      "type": "textfield",
+      "required": false,
+      "default": "18:00",
+      "placeholder": "18:00"
     }
   ],
   "dependencies": {

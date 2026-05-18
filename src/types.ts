@@ -5,6 +5,10 @@ export interface Preferences {
   primaryCurrency: string;
   roundingEnabled: boolean;
   abbreviateNumbers: boolean;
+  firstReminderDays: string;
+  firstReminderTime: string;
+  secondReminderDays: string;
+  secondReminderTime: string;
 }
 
 export interface CalendarDay {
