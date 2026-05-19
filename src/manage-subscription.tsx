@@ -61,10 +61,10 @@ export default function ManageSubscription() {
           <Detail.Metadata.Label title="Subscriptions" text={`${monthSubs.length} this month`} icon={Icon.Calendar} />
           <Detail.Metadata.Separator />
           {monthSubs.length > 0 ? (
-            monthSubs.map((sub) => (
+            monthSubs.map((sub, i) => (
               <Detail.Metadata.Label
                 key={sub.id}
-                title={`${sub.billingDay} ${monthName}`}
+                title={i === 0 || monthSubs[i - 1].billingDay !== sub.billingDay ? `${sub.billingDay} ${monthName}` : ""}
                 text={`${sub.name} · ${formatCurrency(sub.amount, sub.currency)} ${formatCycle(sub.billingCycle)}`}
                 icon={{ source: sub.iconUrl ?? Icon.CreditCard, fallback: Icon.CreditCard }}
               />
