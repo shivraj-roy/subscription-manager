@@ -64,7 +64,7 @@
           "description": "Where to display the monthly total",
           "type": "dropdown",
           "required": false,
-          "default": "title",
+          "default": "dropdown",
           "data": [
             { "title": "Beside icon", "value": "title" },
             { "title": "In dropdown", "value": "dropdown" }
