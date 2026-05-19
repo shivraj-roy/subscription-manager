@@ -1,4 +1,5 @@
 import { Action, ActionPanel, Form, Icon, Toast, showToast, useNavigation } from "@raycast/api";
+import { useLocalStorage } from "@raycast/utils";
 import { useState } from "react";
 import { useSubscriptions } from "./storage";
 import { BillingCycle, Subscription } from "./types";
@@ -31,6 +32,7 @@ export function AddSubscriptionForm() {
   const [paymentSelection, setPaymentSelection] = useState(PRESET_PAYMENT_METHODS[0].value);
   const [serviceSelection, setServiceSelection] = useState("__none__");
   const [category, setCategory] = useState("Entertainment");
+  const { value: lastCurrency, setValue: setLastCurrency } = useLocalStorage("last-currency", "INR");
 
   const serviceCategories = [...new Set(PRESET_SERVICES.map((s) => s.category))];
   const isCustomService = serviceSelection === "__custom__";
@@ -88,6 +90,7 @@ export function AddSubscriptionForm() {
       status: "active",
     };
 
+    await setLastCurrency(values.currency);
     await addSubscription(sub);
     await showToast({ style: Toast.Style.Success, title: "Subscription Added", message: sub.name });
     pop();
@@ -127,7 +130,7 @@ export function AddSubscriptionForm() {
       <Form.Separator />
 
       <Form.TextField id="amount" title="Amount" placeholder="9.99" />
-      <Form.Dropdown id="currency" title="Currency" defaultValue="INR">
+      <Form.Dropdown id="currency" title="Currency" defaultValue={lastCurrency ?? "INR"}>
         {CURRENCIES.map((c) => (
           <Form.Dropdown.Item key={c.value} value={c.value} title={c.title} icon={c.flag} />
         ))}
