@@ -14,6 +14,12 @@
     "Finance"
   ],
   "license": "MIT",
+  "screenshots": [
+    { "path": "metadata/subscription-manager-1.png" },
+    { "path": "metadata/subscription-manager-2.png" },
+    { "path": "metadata/subscription-manager-3.png" },
+    { "path": "metadata/subscription-manager-4.png" }
+  ],
   "commands": [
     {
       "name": "manage-subscription",
