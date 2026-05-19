@@ -96,7 +96,22 @@
         { "title": "🇯🇵 Japanese Yen (JPY)", "value": "JPY" },
         { "title": "🇦🇺 Australian Dollar (AUD)", "value": "AUD" },
         { "title": "🇨🇦 Canadian Dollar (CAD)", "value": "CAD" },
-        { "title": "🇸🇬 Singapore Dollar (SGD)", "value": "SGD" }
+        { "title": "🇸🇬 Singapore Dollar (SGD)", "value": "SGD" },
+        { "title": "🇧🇷 Brazilian Real (BRL)", "value": "BRL" },
+        { "title": "🇨🇭 Swiss Franc (CHF)", "value": "CHF" },
+        { "title": "🇨🇳 Chinese Yuan (CNY)", "value": "CNY" },
+        { "title": "🇭🇰 Hong Kong Dollar (HKD)", "value": "HKD" },
+        { "title": "🇮🇩 Indonesian Rupiah (IDR)", "value": "IDR" },
+        { "title": "🇰🇷 South Korean Won (KRW)", "value": "KRW" },
+        { "title": "🇲🇽 Mexican Peso (MXN)", "value": "MXN" },
+        { "title": "🇲🇾 Malaysian Ringgit (MYR)", "value": "MYR" },
+        { "title": "🇳🇴 Norwegian Krone (NOK)", "value": "NOK" },
+        { "title": "🇳🇿 New Zealand Dollar (NZD)", "value": "NZD" },
+        { "title": "🇵🇭 Philippine Peso (PHP)", "value": "PHP" },
+        { "title": "🇸🇪 Swedish Krona (SEK)", "value": "SEK" },
+        { "title": "🇹🇭 Thai Baht (THB)", "value": "THB" },
+        { "title": "🇹🇷 Turkish Lira (TRY)", "value": "TRY" },
+        { "title": "🇿🇦 South African Rand (ZAR)", "value": "ZAR" }
       ]
     },
     {

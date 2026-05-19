@@ -195,6 +195,21 @@ export const CURRENCIES = [
   { value: "AUD", title: "AUD", flag: "🇦🇺" },
   { value: "CAD", title: "CAD", flag: "🇨🇦" },
   { value: "SGD", title: "SGD", flag: "🇸🇬" },
+  { value: "BRL", title: "BRL", flag: "🇧🇷" },
+  { value: "CHF", title: "CHF", flag: "🇨🇭" },
+  { value: "CNY", title: "CNY", flag: "🇨🇳" },
+  { value: "HKD", title: "HKD", flag: "🇭🇰" },
+  { value: "IDR", title: "IDR", flag: "🇮🇩" },
+  { value: "KRW", title: "KRW", flag: "🇰🇷" },
+  { value: "MXN", title: "MXN", flag: "🇲🇽" },
+  { value: "MYR", title: "MYR", flag: "🇲🇾" },
+  { value: "NOK", title: "NOK", flag: "🇳🇴" },
+  { value: "NZD", title: "NZD", flag: "🇳🇿" },
+  { value: "PHP", title: "PHP", flag: "🇵🇭" },
+  { value: "SEK", title: "SEK", flag: "🇸🇪" },
+  { value: "THB", title: "THB", flag: "🇹🇭" },
+  { value: "TRY", title: "TRY", flag: "🇹🇷" },
+  { value: "ZAR", title: "ZAR", flag: "🇿🇦" },
 ];
 
 export const LISTS = ["Personal", "Work", "Family"];
