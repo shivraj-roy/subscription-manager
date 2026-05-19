@@ -9,7 +9,6 @@ import { Preferences } from "./types";
 import { buildCalendarMarkdown, formatCurrency, formatCycle, getMonthSubscriptions, getMonthlyTotal } from "./utils";
 
 interface RatesResponse {
-  base: string;
   rates: Record<string, number>;
 }
 
@@ -18,8 +17,6 @@ export default function ManageSubscription() {
   const { subscriptions, isLoading } = useSubscriptions();
   const { primaryCurrency } = getPreferenceValues<Preferences>();
 
-  // Fetch live exchange rates from Frankfurter (free, no API key)
-  // base = primaryCurrency → rates[subCurrency] = how many subCurrency per 1 primaryCurrency
   const { data: ratesData, isLoading: ratesLoading } = useFetch<RatesResponse>(
     `https://api.frankfurter.app/latest?from=${primaryCurrency}`,
     { keepPreviousData: true },
@@ -64,7 +61,9 @@ export default function ManageSubscription() {
             monthSubs.map((sub, i) => (
               <Detail.Metadata.Label
                 key={sub.id}
-                title={i === 0 || monthSubs[i - 1].billingDay !== sub.billingDay ? `${sub.billingDay} ${monthName}` : ""}
+                title={
+                  i === 0 || monthSubs[i - 1].billingDay !== sub.billingDay ? `${sub.billingDay} ${monthName}` : ""
+                }
                 text={`${sub.name} · ${formatCurrency(sub.amount, sub.currency)} ${formatCycle(sub.billingCycle)}`}
                 icon={{ source: sub.iconUrl ?? Icon.CreditCard, fallback: Icon.CreditCard }}
               />

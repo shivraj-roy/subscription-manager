@@ -1,6 +1,7 @@
 import {
   Action,
   ActionPanel,
+  Alert,
   Detail,
   Form,
   Icon,
@@ -283,7 +284,7 @@ ${sub.notes ? `---\n\n${sub.notes}` : ""}
               const confirmed = await confirmAlert({
                 title: `Delete "${sub.name}"?`,
                 message: "This action cannot be undone.",
-                primaryAction: { title: "Delete", style: Action.Style.Destructive },
+                primaryAction: { title: "Delete", style: Alert.ActionStyle.Destructive },
               });
               if (confirmed) {
                 await deleteSubscription(id);

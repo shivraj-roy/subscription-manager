@@ -2,7 +2,7 @@ import { Action, ActionPanel, Color, Detail, Icon, getPreferenceValues } from "@
 import { useFetch } from "@raycast/utils";
 import { useState } from "react";
 import { useSubscriptions } from "./storage";
-import { BillingCycle, Preferences, Subscription } from "./types";
+import { Preferences, Subscription } from "./types";
 import { formatCurrency, getMonthlyEquivalent, getMonthlyTotal, getNextBillingDate } from "./utils";
 
 type GroupBy = "category" | "cycle" | "list";
@@ -47,11 +47,9 @@ export default function AnalyticsCommand() {
   const lastMonthTotal = getMonthlyTotal(subscriptions, lastMonth, lastMonthYear, prefs.primaryCurrency, rates);
   const yearlyForecast = thisMonthTotal * 12;
 
-  // Group active subs
   const groups: Record<string, Subscription[]> = {};
   for (const sub of active) {
-    const key =
-      groupBy === "category" ? sub.category : groupBy === "cycle" ? sub.billingCycle : sub.list;
+    const key = groupBy === "category" ? sub.category : groupBy === "cycle" ? sub.billingCycle : sub.list;
     if (!groups[key]) groups[key] = [];
     groups[key].push(sub);
   }
@@ -59,10 +57,8 @@ export default function AnalyticsCommand() {
     .map(([key, subs]) => ({ key, total: subs.reduce((sum, s) => sum + toMonthlyPrimary(s), 0), count: subs.length }))
     .sort((a, b) => b.total - a.total);
 
-  // Top 5 by monthly cost
   const topSubs = [...active].sort((a, b) => toMonthlyPrimary(b) - toMonthlyPrimary(a)).slice(0, 5);
 
-  // Next bill
   let nextBill: { name: string; daysAway: number } | null = null;
   for (const sub of active) {
     const next = getNextBillingDate(sub);
@@ -71,7 +67,6 @@ export default function AnalyticsCommand() {
     if (!nextBill || days < nextBill.daysAway) nextBill = { name: sub.name, daysAway: days };
   }
 
-  // Month comparison
   const monthDiff = thisMonthTotal - lastMonthTotal;
   const monthDiffPct = lastMonthTotal > 0 ? (monthDiff / lastMonthTotal) * 100 : 0;
   const trendSymbol = monthDiff >= 0 ? "↑" : "↓";
@@ -144,7 +139,7 @@ ${topRows}
           <Detail.Metadata.Label
             title="Avg Cost / Sub"
             text={active.length > 0 ? formatCurrency(thisMonthTotal / active.length, prefs.primaryCurrency) : "—"}
-            icon={Icon.Divide}
+            icon={Icon.BarChart}
           />
           <Detail.Metadata.Separator />
           <Detail.Metadata.Label
@@ -177,21 +172,9 @@ ${topRows}
       actions={
         <ActionPanel>
           <ActionPanel.Section title="Group By">
-            <Action
-              title="By Category"
-              icon={Icon.Tag}
-              onAction={() => setGroupBy("category")}
-            />
-            <Action
-              title="By Billing Cycle"
-              icon={Icon.ArrowClockwise}
-              onAction={() => setGroupBy("cycle")}
-            />
-            <Action
-              title="By List"
-              icon={Icon.List}
-              onAction={() => setGroupBy("list")}
-            />
+            <Action title="By Category" icon={Icon.Tag} onAction={() => setGroupBy("category")} />
+            <Action title="By Billing Cycle" icon={Icon.ArrowClockwise} onAction={() => setGroupBy("cycle")} />
+            <Action title="By List" icon={Icon.List} onAction={() => setGroupBy("list")} />
           </ActionPanel.Section>
         </ActionPanel>
       }

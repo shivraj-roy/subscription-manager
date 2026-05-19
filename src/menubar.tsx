@@ -39,11 +39,16 @@ export default function MenubarCommand() {
     .filter((s) => {
       const start = new Date(s.startDate);
       switch (s.billingCycle) {
-        case "monthly": return true;
-        case "yearly": return start.getMonth() === month;
-        case "quarterly": return (month - start.getMonth() + 12) % 3 === 0;
-        case "half-yearly": return (month - start.getMonth() + 12) % 6 === 0;
-        default: return true;
+        case "monthly":
+          return true;
+        case "yearly":
+          return start.getMonth() === month;
+        case "quarterly":
+          return (month - start.getMonth() + 12) % 3 === 0;
+        case "half-yearly":
+          return (month - start.getMonth() + 12) % 6 === 0;
+        default:
+          return true;
       }
     })
     .sort((a, b) => a.billingDay - b.billingDay);
@@ -65,9 +70,17 @@ export default function MenubarCommand() {
 
       {content === "minimal" && (
         <MenuBarExtra.Section>
-          <MenuBarExtra.Item title={`${activeCount} active subscription${activeCount !== 1 ? "s" : ""}`} icon={Icon.List} onAction={openCalendar} />
+          <MenuBarExtra.Item
+            title={`${activeCount} active subscription${activeCount !== 1 ? "s" : ""}`}
+            icon={Icon.List}
+            onAction={openCalendar}
+          />
           {todaySubs.length > 0 && (
-            <MenuBarExtra.Item title={`${todaySubs.length} due today`} icon="subscription-icon.png" onAction={openCalendar} />
+            <MenuBarExtra.Item
+              title={`${todaySubs.length} due today`}
+              icon="subscription-icon.png"
+              onAction={openCalendar}
+            />
           )}
         </MenuBarExtra.Section>
       )}

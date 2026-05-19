@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Color, Icon, List, Toast, confirmAlert, popToRoot, showToast } from "@raycast/api";
+import { Action, ActionPanel, Alert, Color, Icon, List, Toast, confirmAlert, popToRoot, showToast } from "@raycast/api";
 import { useState } from "react";
 import { AddSubscriptionForm } from "./add-subscription";
 import { SubscriptionDetail } from "./subscription-detail";
@@ -56,7 +56,11 @@ export function SubscriptionList() {
             ]}
             actions={
               <ActionPanel>
-                <Action.Push title="View Details" icon={Icon.Eye} target={<SubscriptionDetail id={sub.id} allIds={allIds} />} />
+                <Action.Push
+                  title="View Details"
+                  icon={Icon.Eye}
+                  target={<SubscriptionDetail id={sub.id} allIds={allIds} />}
+                />
                 <Action.Push
                   title="Edit"
                   icon={Icon.Pencil}
@@ -87,7 +91,7 @@ export function SubscriptionList() {
                       const confirmed = await confirmAlert({
                         title: `Delete "${sub.name}"?`,
                         message: "This action cannot be undone.",
-                        primaryAction: { title: "Delete", style: Action.Style.Destructive },
+                        primaryAction: { title: "Delete", style: Alert.ActionStyle.Destructive },
                       });
                       if (confirmed) {
                         await deleteSubscription(sub.id);

@@ -2,7 +2,7 @@
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "subscription-manager",
   "title": "Subscription Manager",
-  "description": "Manage all your subscription ",
+  "description": "Track and manage all your recurring subscriptions",
   "icon": "subscription-icon.png",
   "author": "shivraj-roy",
   "platforms": [
@@ -24,7 +24,7 @@
     {
       "name": "manage-subscription",
       "title": "Manage Subscription",
-      "description": "",
+      "description": "Calendar view with monthly billing overview",
       "mode": "view"
     },
     {

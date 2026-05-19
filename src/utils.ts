@@ -221,7 +221,6 @@ export const PRESET_PAYMENT_METHODS = [
 ];
 
 export const PRESET_SERVICES = [
-  // Entertainment
   { name: "Netflix", domain: "netflix.com", category: "Entertainment" },
   { name: "Spotify", domain: "spotify.com", category: "Entertainment" },
   { name: "YouTube", domain: "youtube.com", category: "Entertainment" },
@@ -236,14 +235,12 @@ export const PRESET_SERVICES = [
   { name: "Nintendo Switch Online", domain: "nintendo.com", category: "Entertainment" },
   { name: "PlayStation", domain: "playstation.com", category: "Entertainment" },
   { name: "Xbox Game Pass", domain: "xbox.com", category: "Entertainment" },
-  // Productivity
   { name: "Notion", domain: "notion.so", category: "Productivity" },
   { name: "Microsoft 365", domain: "microsoft.com", category: "Productivity" },
   { name: "Slack", domain: "slack.com", category: "Productivity" },
   { name: "Zoom", domain: "zoom.us", category: "Productivity" },
   { name: "LinkedIn", domain: "linkedin.com", category: "Productivity" },
   { name: "Duolingo", domain: "duolingo.com", category: "Productivity" },
-  // AI Tools
   { name: "Claude", domain: "claude.ai", category: "AI Tools" },
   { name: "ChatGPT", domain: "openai.com", category: "AI Tools" },
   { name: "Cursor", domain: "cursor.com", category: "AI Tools" },
@@ -253,7 +250,6 @@ export const PRESET_SERVICES = [
   { name: "GitHub Copilot", domain: "github.com", category: "AI Tools" },
   { name: "ElevenLabs", domain: "elevenlabs.io", category: "AI Tools" },
   { name: "Runway", domain: "runwayml.com", category: "AI Tools" },
-  // Software & Tools
   { name: "GitHub", domain: "github.com", category: "Software & Tools" },
   { name: "Adobe Creative Cloud", domain: "adobe.com", category: "Software & Tools" },
   { name: "Figma", domain: "figma.com", category: "Software & Tools" },
@@ -261,7 +257,6 @@ export const PRESET_SERVICES = [
   { name: "1Password", domain: "1password.com", category: "Software & Tools" },
   { name: "NordVPN", domain: "nordvpn.com", category: "Software & Tools" },
   { name: "X Premium", domain: "x.com", category: "Software & Tools" },
-  // Cloud Storage
   { name: "Google One", domain: "one.google.com", category: "Cloud Storage" },
   { name: "iCloud+", domain: "icloud.com", category: "Cloud Storage" },
   { name: "Dropbox", domain: "dropbox.com", category: "Cloud Storage" },
