@@ -76,7 +76,7 @@ export function AddSubscriptionForm() {
       id: generateId(),
       name,
       billingDay: values.startDate.getDate(),
-      startDate: values.startDate.toISOString().split("T")[0],
+      startDate: `${values.startDate.getFullYear()}-${String(values.startDate.getMonth() + 1).padStart(2, "0")}-${String(values.startDate.getDate()).padStart(2, "0")}`,
       amount,
       currency: values.currency,
       billingCycle: values.billingCycle as BillingCycle,

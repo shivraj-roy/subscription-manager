@@ -1,4 +1,4 @@
-import { Icon, LaunchType, LocalStorage, MenuBarExtra, getPreferenceValues, launchCommand } from "@raycast/api";
+import { Icon, LaunchType, MenuBarExtra, getPreferenceValues, launchCommand } from "@raycast/api";
 import { useFetch } from "@raycast/utils";
 import { useSubscriptions } from "./storage";
 import { Preferences, Subscription } from "./types";
@@ -67,7 +67,7 @@ export default function MenubarCommand() {
         <MenuBarExtra.Section>
           <MenuBarExtra.Item title={`${activeCount} active subscription${activeCount !== 1 ? "s" : ""}`} icon={Icon.List} onAction={openCalendar} />
           {todaySubs.length > 0 && (
-            <MenuBarExtra.Item title={`${todaySubs.length} due today`} icon={Icon.Bell} onAction={openCalendar} />
+            <MenuBarExtra.Item title={`${todaySubs.length} due today`} icon="subscription-icon.png" onAction={openCalendar} />
           )}
         </MenuBarExtra.Section>
       )}
@@ -141,14 +141,14 @@ export default function MenubarCommand() {
 
   if (showInTitle) {
     return (
-      <MenuBarExtra icon={Icon.Bell} title={totalStr} isLoading={isLoading}>
+      <MenuBarExtra icon="subscription-icon.png" title={totalStr} isLoading={isLoading}>
         {menuContent}
       </MenuBarExtra>
     );
   }
 
   return (
-    <MenuBarExtra icon={Icon.Bell} isLoading={isLoading}>
+    <MenuBarExtra icon="subscription-icon.png" isLoading={isLoading}>
       {menuContent}
     </MenuBarExtra>
   );

@@ -82,7 +82,7 @@ function EditForm({ sub, onSave }: { sub: Subscription; onSave: (updates: Partia
       currency: values.currency,
       billingCycle: values.billingCycle as BillingCycle,
       billingDay: values.startDate.getDate(),
-      startDate: values.startDate.toISOString().split("T")[0],
+      startDate: `${values.startDate.getFullYear()}-${String(values.startDate.getMonth() + 1).padStart(2, "0")}-${String(values.startDate.getDate()).padStart(2, "0")}`,
       category: values.category,
       paymentMethod,
       list: values.list,

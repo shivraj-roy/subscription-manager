@@ -3,7 +3,7 @@
   "name": "subscription-manager",
   "title": "Subscription Manager",
   "description": "Manage all your subscription ",
-  "icon": "extension-icon.png",
+  "icon": "subscription-icon.png",
   "author": "shivraj-roy",
   "platforms": [
     "macOS",
