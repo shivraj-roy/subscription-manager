@@ -176,9 +176,18 @@ function EditForm({ sub, onSave }: { sub: Subscription; onSave: (updates: Partia
   );
 }
 
-export function SubscriptionDetail({ id, startEditing = false }: { id: string; startEditing?: boolean }) {
+export function SubscriptionDetail({
+  id,
+  startEditing = false,
+  allIds = [],
+}: {
+  id: string;
+  startEditing?: boolean;
+  allIds?: string[];
+}) {
   const [editing, setEditing] = useState(startEditing);
   const { subscriptions, updateSubscription, deleteSubscription } = useSubscriptions();
+  const { push } = useNavigation();
 
   const sub = subscriptions.find((s) => s.id === id);
 
@@ -197,6 +206,10 @@ export function SubscriptionDetail({ id, startEditing = false }: { id: string; s
       />
     );
   }
+
+  const currentIndex = allIds.indexOf(id);
+  const prevId = currentIndex > 0 ? allIds[currentIndex - 1] : null;
+  const nextId = currentIndex < allIds.length - 1 ? allIds[currentIndex + 1] : null;
 
   const nextBilling = (() => {
     const today = new Date();
@@ -245,6 +258,22 @@ ${sub.notes ? `---\n\n${sub.notes}` : ""}
               await popToRoot();
             }}
           />
+          {allIds.length > 1 && (
+            <ActionPanel.Section title="Navigate">
+              <Action
+                title="Previous Subscription"
+                icon={Icon.ArrowLeft}
+                shortcut={{ modifiers: [], key: "arrowLeft" }}
+                onAction={() => prevId && push(<SubscriptionDetail id={prevId} allIds={allIds} />)}
+              />
+              <Action
+                title="Next Subscription"
+                icon={Icon.ArrowRight}
+                shortcut={{ modifiers: [], key: "arrowRight" }}
+                onAction={() => nextId && push(<SubscriptionDetail id={nextId} allIds={allIds} />)}
+              />
+            </ActionPanel.Section>
+          )}
           <Action
             title="Delete Subscription"
             icon={Icon.Trash}

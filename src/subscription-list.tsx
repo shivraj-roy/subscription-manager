@@ -35,6 +35,8 @@ export function SubscriptionList() {
   const active = filtered.filter((s) => s.status === "active");
   const paused = filtered.filter((s) => s.status === "paused");
 
+  const allIds = filtered.map((s) => s.id);
+
   function renderSection(items: typeof filtered, title: string) {
     if (items.length === 0) return null;
     return (
@@ -54,11 +56,11 @@ export function SubscriptionList() {
             ]}
             actions={
               <ActionPanel>
-                <Action.Push title="View Details" icon={Icon.Eye} target={<SubscriptionDetail id={sub.id} />} />
+                <Action.Push title="View Details" icon={Icon.Eye} target={<SubscriptionDetail id={sub.id} allIds={allIds} />} />
                 <Action.Push
                   title="Edit"
                   icon={Icon.Pencil}
-                  target={<SubscriptionDetail id={sub.id} startEditing />}
+                  target={<SubscriptionDetail id={sub.id} startEditing allIds={allIds} />}
                   shortcut={{ modifiers: ["cmd"], key: "e" }}
                 />
                 <ActionPanel.Section>
