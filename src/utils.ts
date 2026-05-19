@@ -37,7 +37,7 @@ export function formatCycle(cycle: BillingCycle): string {
   }
 }
 
-function getMonthlyEquivalent(amount: number, cycle: BillingCycle): number {
+export function getMonthlyEquivalent(amount: number, cycle: BillingCycle): number {
   switch (cycle) {
     case "monthly":
       return amount;

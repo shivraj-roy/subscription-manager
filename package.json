@@ -22,6 +22,12 @@
       "mode": "view"
     },
     {
+      "name": "analytics",
+      "title": "Subscription Analytics",
+      "description": "Spending breakdown and insights across your subscriptions",
+      "mode": "view"
+    },
+    {
       "name": "add-subscription",
       "title": "Add Subscription",
       "description": "Add a new subscription",
